@@ -8,7 +8,6 @@ import jax
 from jax import numpy as jnp
 from flax.core import frozen_dict
 from flax.traverse_util import ModelParamTraversal
-import resnet_models
 import optax
 from flax import linen as nn
 from functools import partial
@@ -26,26 +25,10 @@ from senn.opt import (
     DiagOpt,
 )
 from senn.linalg import IRootWhitener, DiagWhitener, HybridWhitener, MaskedWhitener
-from senn.taylor import taylorify
 from senn.models import ExpandableDense
 
 from tiny_imagenet import TinyImagenetDataset
 import tensorflow as tf
-
-
-def basic_resnet(*, out, nonlin, **kwargs):
-    return resnet_models.ResNet(
-        num_classes=out, act=nonlin, block_cls=resnet_models.ResNetBlock, **kwargs
-    )
-
-
-def bottleneck_resnet(*, out, nonlin, **kwargs):
-    return resnet_models.ResNet(
-        num_classes=out,
-        act=nonlin,
-        block_cls=resnet_models.BottleneckResNetBlock,
-        **kwargs,
-    )
 
 
 dataset_kwargs = dict(
@@ -92,8 +75,6 @@ nonlin = {"tanh": jnp.tanh, "swish": jax.nn.swish}[wandb.config.model_nonlineari
 model_types = dict(
     Perceptron=models.Perceptron,
     SmallConvNet=models.SmallConvNet,
-    BasicResNet=basic_resnet,
-    BottleneckResNet=bottleneck_resnet,
     AllCnnA=models.AllCnnA,
     AllCnnC=models.AllCnnC,
     DenseNet=models.DenseNet,
