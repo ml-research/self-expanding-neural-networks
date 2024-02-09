@@ -1,0 +1,9 @@
+cd /senn
+
+# old commands for pdm passthrough setup:
+# pdm use --venv in-project
+# eval $(pdm venv activate in-project)
+# pdm install
+
+# new command to just add local package as editable from volume
+pip install --editable .

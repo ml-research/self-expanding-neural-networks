@@ -1,0 +1,25 @@
+version: "3"
+services:
+        main:
+                build:
+                        context: .
+                        dockerfile: Dockerfile
+                stdin_open: true
+                tty: true
+                env_file: .env
+                environment:
+                        - CUDA_VISIBLE_DEVICES
+                        - JAX_PLATFORMS
+                        - DATASETS_ROOT_DIR=/datasets
+                        - WANDB_DIR=/wandb
+                volumes:
+                        - .:/senn
+                        - ./bashrc_docker:/root/.bashrc
+                        - $DATASETS_ROOT_DIR:/datasets
+                        - $WANDB_DIR:/wandb
+                shm_size: '8gb'
+                deploy:
+                        resources:
+                                reservations:
+                                        devices:
+                                                - capabilities: [gpu]

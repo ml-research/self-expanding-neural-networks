@@ -1,0 +1,78 @@
+[build-system]
+requires = ["setuptools>=61", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "senn"
+description = "Dynamically sized neural networks for JAX/Flax"
+authors = [
+    {name = "wittnus", email = "mail@wittnus.me"},
+]
+dependencies = [
+    "jax>=0.4.13",
+    "tensorflow-probability==0.20.1",
+    "compose>=1.4.8",
+    "scikit-learn>=1.3.0",
+    "torch>=2.0.1",
+    "torchvision>=0.15.2",
+    "tensorflow-datasets>=4.9.2",
+    "tqdm>=4.65.0",
+    "wandb>=0.15.5",
+    "rtpt>=0.0.4",
+    "absl-py>=1.4.0",
+    "dm-pix>=0.4.1",
+    "jaxwt>=0.1.0",
+    "PyWavelets>=1.4.1",
+    "dtcwt>=0.12.0",
+    "tiny-imagenet-tfds @ git+https://github.com/rmenzenbach/tiny-imagenet-tfds.git",
+    "flax==0.7.0",
+    "etils[epath]>=1.3.0",
+    "optax==0.1.7"
+]
+requires-python = ">=3.8"
+readme = "README.md"
+license = {text = "MIT"}
+classifiers = [
+	"Programming Language :: Python :: 3",
+	"License :: OSI Approved :: MIT License",
+	"Operating System :: OS Independent",
+]
+dynamic = ["version"]
+
+[project.optional-dependencies]
+cuda = [
+]
+[tool.pdm]
+version = {use_scm = true}
+
+[tool.pdm.dev-dependencies]
+test = [
+    "pytest>=7.3.1",
+]
+dev = [
+    "black>=23.3.0",
+]
+
+[[tool.pdm.source]]
+url = "https://storage.googleapis.com/jax-releases/jax_cuda_releases.html"
+name = "jax_cuda_releases"
+type = "find_links"
+
+[[tool.pdm.source]]
+url = "https://download.pytorch.org/whl/cpu"
+name = "pytorch"
+type = "find_links"
+
+[tool.pdm.scripts]
+pre_example = "docker compose up --no-recreate -d"
+example.cmd = "docker compose exec -e CUDA_VISIBLE_DEVICES -e JAX_PLATFORMS -w /senn/examples main python"
+test.cmd = "docker compose exec -e CUDA_VISIBLE_DEVICES='' -e JAX_PLATFORMS=cpu -w /senn main python -m pytest"
+exec.cmd = "docker compose exec -e CUDA_VISIBLE_DEVICES -e JAX_PLATFORMS main python"
+black.cmd = "docker compose exec -w /senn main python -m black ."
+
+[tool.pytest.ini_options]
+addopts = [
+    "--import-mode=importlib",
+]
+[tool.setuptools.packages.find]
+exclude = ["orbax"]
