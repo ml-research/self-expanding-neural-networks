@@ -1,0 +1,58 @@
+meta:
+  seed: 0
+  propseed: 0
+task:
+  type: regression
+  out_size: 1
+  in_size: 1
+  hidden: [16, 16, 16, 16]
+data:
+  N: 50
+  TN: 1000
+net:
+  capacities: [128]
+  contents: [1]
+  rational: true
+opt:
+  max_epochs: 2000
+  skip_first_n_batches: 20
+  lr: 1.0e-1
+  reduce_thresh: 1000
+  max_accuracy: 0.99
+  order: 100
+  method: cg
+  tikhonov: 1.0e-1
+  batch_size: 50
+  tau: null
+  sqtau: 1000
+  soln_tau:
+  soln_sqtau:
+  soln_adam: false
+
+  weight_decay: 0.0e-3
+  l2_regularization: 0.0e-3
+evo:
+  pure_kfac: false
+  proposals_per_layer: 100
+  proposal_temperature: 1.0e+0
+  layer_proposals_per_layer: 100
+  steps: 300
+  initial_lr: 3.0e-1
+  thresh: 1.0e+0
+  layer_cost_mul: 20.
+  recursive: true
+  abs_thresh: 2.5e-3
+  layer_abs_thresh: 2.5e-3
+  cooldown: 30
+  layer_cooldown: 3
+  size_costing: false
+  layer_eig_floor: 0.01
+  total_size_scaling: false
+metrics:
+  activation_histograms: false
+  gradient_histograms: false
+  natgrad_histograms: false
+checkpointing:
+  enable: True
+  cooldown: 1
+  restore: True

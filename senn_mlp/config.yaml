@@ -1,0 +1,9 @@
+meta:
+    logdir: /logs
+    name: untitled
+data:
+  root: /datasets
+  defaults:
+    root: /datasets
+checkpointing:
+  directory: /checkpoints
